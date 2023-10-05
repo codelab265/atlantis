@@ -20,6 +20,7 @@ import { StatusBar } from "expo-status-bar";
 import Colors from "../src/shared/Colors";
 import { AuthProvider, useAuthContext } from "../src/context/AuthContext";
 import { PaperProvider } from "react-native-paper";
+import { CartContextProvider } from "../src/context/CartContext";
 
 export default () => {
   let [fontsLoaded] = useFonts({
@@ -45,62 +46,42 @@ export default () => {
     <>
       <StatusBar backgroundColor={Colors.primary} />
       <AuthProvider>
-        <PaperProvider>
-          <Stack
-            screenOptions={{
-              headerTintColor: "#fff",
-              headerStyle: { backgroundColor: Colors.primary },
-            }}
-          >
-            <Stack.Screen
-              name="index"
-              options={{ headerTitle: "Home", headerShown: false }}
-            />
-            <Stack.Screen
-              name="SplashScreen"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="home" options={{ headerShown: false }} />
-            <Stack.Screen name="fireguard" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="AccountDetails"
-              options={{ headerTitle: "Account Details" }}
-            />
-            <Stack.Screen
-              name="AccountEdit"
-              options={{ headerTitle: "Update Account" }}
-            />
-            <Stack.Screen
-              name="UploadImages"
-              options={{ headerTitle: "Upload Images" }}
-            />
-            <Stack.Screen
-              name="UploadedImages"
-              options={{ headerTitle: "Uploaded Images" }}
-            />
-            <Stack.Screen
-              name="ReportDetails"
-              options={{ headerTitle: "Report Details" }}
-            />
-            <Stack.Screen
-              name="ViewLocation"
-              options={{ headerTitle: "Location" }}
-            />
-            <Stack.Screen
-              name="CheckWind"
-              options={{ headerTitle: "Wind details for the user" }}
-            />
-            <Stack.Screen
-              name="FireguardChat"
-              options={{ headerShown:false }}
-            />
-            <Stack.Screen
-              name="UserChat"
-              options={{ headerShown:false }}
-            />
-            
-          </Stack>
-        </PaperProvider>
+        <CartContextProvider>
+          <PaperProvider>
+            <Stack
+              screenOptions={{
+                headerTintColor: "#fff",
+                headerStyle: { backgroundColor: Colors.primary },
+                headerTitleAlign: "center",
+              }}
+            >
+              <Stack.Screen
+                name="index"
+                options={{ headerTitle: "Home", headerShown: false }}
+              />
+              <Stack.Screen
+                name="SplashScreen"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="customer/login"
+                options={{ headerTitle: "Customer Login" }}
+              />
+              <Stack.Screen
+                name="customer/register"
+                options={{ headerTitle: "Customer Register" }}
+              />
+              <Stack.Screen
+                name="customer/home"
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="customer/checkout"
+                options={{ headerTitle: "Checkout" }}
+              />
+            </Stack>
+          </PaperProvider>
+        </CartContextProvider>
       </AuthProvider>
     </>
   );

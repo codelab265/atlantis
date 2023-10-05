@@ -17,13 +17,13 @@ const CheckAuth = (isLogged, authLoading, userInfo) => {
       router.replace("SplashScreen");
     } else {
       if (isLogged) {
-        if(userInfo?.role==1 || userInfo?.role==2){
+        if (userInfo?.role == 1 || userInfo?.role == 2) {
           setImmediate(() => {
-            router.replace("fireguard");
+            router.replace("rider");
           });
-        }else{
+        } else {
           setImmediate(() => {
-            router.replace("home");
+            router.replace("customer/home");
           });
         }
       } else {
@@ -44,6 +44,7 @@ export const AuthProvider = ({ children }) => {
   const [granted, setGranted] = useState(null);
   const [uploadedImages, setUploadedImages] = useState([]);
   const [reports, setReports] = useState([]);
+  const [jar, setJar] = useState([]);
 
   useEffect(() => {
     checkLogged();
@@ -64,6 +65,22 @@ export const AuthProvider = ({ children }) => {
   }, [location]);
 
   useEffect(() => {
+    const getJars = async () => {
+      await axios
+        .get(`${BASE_URL}/jars`)
+        .then((response) => {
+          setJar(response.data);
+          // console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    getJars();
+  }, []);
+
+  useEffect(() => {
     (async () => {
       if (!granted) return;
       let location = await Location.getCurrentPositionAsync({});
@@ -78,7 +95,7 @@ export const AuthProvider = ({ children }) => {
       .then((response) => {
         setLoading(false);
         setUserInfo(response.data.data);
-        AsyncStorage.setItem("userInfo", JSON.stringify(response.data.data));
+        AsyncStorage.setItem("userInfo", JSON.stringify(response.data));
         setIsLogged(true);
         console.log(response.data);
       })
@@ -157,8 +174,7 @@ export const AuthProvider = ({ children }) => {
         uploadedImages,
         setUploadedImages,
         location,
-        reports,
-        setReports
+        jar
       }}
     >
       {children}

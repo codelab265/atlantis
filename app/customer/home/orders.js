@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const ViewUploadedImage = () => {
+const orders = () => {
   return (
     <View>
-      <Text>ViewUploadedImage</Text>
+      <Text>orders</Text>
     </View>
   )
 }
 
-export default ViewUploadedImage
+export default orders

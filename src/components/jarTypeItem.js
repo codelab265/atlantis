@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Button = () => {
+const jarTypeItem = () => {
   return (
     <View>
-      <Text>Button</Text>
+      <Text>jarTypeItem</Text>
     </View>
   )
 }
 
-export default Button
+export default jarTypeItem

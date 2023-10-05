@@ -3,18 +3,35 @@ import React, { createContext, useContext, useState, useMemo } from "react";
 const CartContext = createContext();
 
 export const CartContextProvider = ({ children }) => {
-
   const [cart, setCart] = useState([]);
 
   const addToCart = (order) => {
-    const { timestamp, ...others } = order;
-    const newCart = [...cart, others];
-    setCart(newCart);
-    console.log(newCart);
+    const { id, price } = order;
+    const productInCart = cart.map((item) => item.id).includes(id);
+    if (productInCart) {
+      const newCart = cart.map((item) => {
+        if (item.id == id) {
+          const newQty = parseInt(item.quantity) + 1;
+          return {
+            ...item,
+            quantity: newQty,
+            totalPrice: newQty * price,
+          };
+        } else {
+          return item;
+        }
+      });
+      setCart(newCart);
+    } else {
+      const newCart = [...cart, order];
+      setCart(newCart);
+    }
+
+    console.log(cart);
   };
 
-  const removeFromCart = (order) => {
-    const newCart = cart.filter((item) => item.product.id !== order.id);
+  const removeFromCart = (id) => {
+    const newCart = cart.filter((item) => item.id !== id);
     setCart(newCart);
   };
 
@@ -23,7 +40,6 @@ export const CartContextProvider = ({ children }) => {
   };
 
   const editProductQuantity = ({ id, quantity }) => {
-    
     const newCart = cart.map((item) => {
       if (item.product.id == id) {
         return { ...item, quantity, totalPrice: quantity * item.price };
@@ -33,11 +49,14 @@ export const CartContextProvider = ({ children }) => {
     });
   };
   const addProductQuantity = (id) => {
-    
     const newCart = cart.map((item) => {
-      if (item.product.id == id) {
+      if (item.id == id) {
         const newQty = parseInt(item.quantity) + 1;
-        return { ...item, quantity: newQty, totalPrice: newQty * item.product.price };
+        return {
+          ...item,
+          quantity: newQty,
+          totalPrice: newQty * item.price,
+        };
       } else {
         return item;
       }
@@ -46,9 +65,13 @@ export const CartContextProvider = ({ children }) => {
   };
   const subtractProductQuantity = (id) => {
     const newCart = cart.map((item) => {
-      if (item.product.id == id) {
+      if (item.id == id & item.quantity>1) {
         const newQty = parseInt(item.quantity) - 1;
-        return { ...item, quantity: newQty, totalPrice: newQty * item.product.price };
+        return {
+          ...item,
+          quantity: newQty,
+          totalPrice: newQty * item.price,
+        };
       } else {
         return item;
       }
